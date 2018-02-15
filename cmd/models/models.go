@@ -86,25 +86,6 @@ type CommitsResponse struct {
 	Next string `json:"next"`
 }
 
-// Author represents a real person, referenced as either an "Author" or a "User"
-type Author struct {
-	DisplayName string `json:"display_name"`
-	Links       struct {
-		Avatar struct {
-			Href string `json:"href"`
-		} `json:"avatar"`
-		HTML struct {
-			Href string `json:"href"`
-		} `json:"html"`
-		Self struct {
-			Href string `json:"href"`
-		} `json:"self"`
-	} `json:"links,omitempty"`
-	Type     string `json:"type"`
-	Username string `json:"username"`
-	UUID     string `json:"uuid"`
-}
-
 // Links is the structure of links and references attached to many Bitbucket API responses.
 type Links struct {
 	Activity struct {
@@ -140,101 +121,6 @@ type Links struct {
 	Statuses struct {
 		Href string `json:"href"`
 	} `json:"statuses"`
-}
-
-type PagedGenericResponse struct {
-	Page     int               `json:"page"`
-	Pagelen  int               `json:"pagelen"`
-	Size     int               `json:"size"`
-	Next     string            `json:"next"`
-	Previous string            `json:"previous"`
-	Values   []GenericResponse `json:"values"`
-}
-
-// GenericResponse is the standard JSON response from the Bitbucket API covering most object types.
-type GenericResponse struct {
-	Author            Author         `json:"author,omitempty"`
-	CloseSourceBranch bool           `json:"close_source_branch,omitempty"`
-	ClosedBy          interface{}    `json:"closed_by,omitempty"`
-	CommentCount      int            `json:"comment_count,omitempty"`
-	Content           CommentContent `json:"content,omitempty"`
-	CreatedOn         time.Time      `json:"created_on"`
-	Description       string         `json:"description"`
-	Destination       struct {
-		Branch struct {
-			Name string `json:"name,omitempty"`
-		} `json:"branch,omitempty"`
-		Commit struct {
-			Hash  string `json:"hash"`
-			Links Links  `json:"links"`
-		} `json:"commit,omitempty"`
-		Repository struct {
-			FullName string `json:"full_name"`
-			Links    Links  `json:"links,omitempty"`
-			Name     string `json:"name"`
-			Type     string `json:"type"`
-			UUID     string `json:"uuid,omitempty"`
-		} `json:"repository,omitempty"`
-	} `json:"destination,omitempty"`
-	ID     int `json:"id"`
-	Inline *struct {
-		Path string `json:"path,omitempty"`
-	} `json:"inline,omitempty"`
-	Links       Links       `json:"links,omitempty"`
-	MergeCommit interface{} `json:"merge_commit,omitempty"`
-	Parent      *struct {
-		ID int `json:"id,omitempty"`
-	} `json:"parent,omitempty"`
-	Participants []struct {
-		Approved bool   `json:"approved"`
-		Role     string `json:"role"`
-		Type     string `json:"type"`
-		User     struct {
-			DisplayName string `json:"display_name"`
-			Links       struct {
-				Avatar struct {
-					Href string `json:"href"`
-				} `json:"avatar"`
-				HTML struct {
-					Href string `json:"href"`
-				} `json:"html"`
-				Self struct {
-					Href string `json:"href"`
-				} `json:"self"`
-			} `json:"links"`
-			Type     string `json:"type"`
-			Username string `json:"username"`
-			UUID     string `json:"uuid"`
-		} `json:"user"`
-	} `json:"participants"`
-	Pullrequest struct {
-		Type  string `json:"type,omitempty"`
-		ID    int    `json:"id,omitempty"`
-		Links Links  `json:"links,omitempty"`
-	} `json:"pullrequest,omitempty"`
-	Reason string `json:"reason,omitempty"`
-	Source struct {
-		Branch struct {
-			Name string `json:"name"`
-		} `json:"branch,omitempty"`
-		Commit struct {
-			Hash  string `json:"hash"`
-			Links Links  `json:"links"`
-		} `json:"commit,omitempty"`
-		Repository struct {
-			FullName string `json:"full_name"`
-			Links    Links  `json:"links,omitempty"`
-			Name     string `json:"name"`
-			Type     string `json:"type"`
-			UUID     string `json:"uuid"`
-		} `json:"repository,omitempty"`
-	} `json:"source,omitempty"`
-	State     string    `json:"state,omitempty"`
-	TaskCount int       `json:"task_count,omitempty"`
-	Title     string    `json:"title,omitempty"`
-	Type      string    `json:"type,omitempty"`
-	UpdatedOn time.Time `json:"updated_on"`
-	User      Author    `json:"user,omitempty"`
 }
 
 // CheckRequest is the struct/JSON that is supplied to "check", coming from the Concourse pipeline under "resources"
@@ -359,26 +245,4 @@ type CommitStatusResponse struct {
 		UpdatedOn string `json:"updated_on"`
 		URL       string `json:"url"`
 	} `json:"values"`
-}
-
-// CommentContent is the actual text of a comment.
-type CommentContent struct {
-	Raw  string `json:"raw"`
-	HTML string `json:"html"`
-}
-
-// Comment represents a comment on a Pull Request.
-type Comment struct {
-	// Pullrequest struct{}       `json:"pullrequest"`
-	Content   CommentContent `json:"content"`
-	CreatedOn time.Time      `json:"created_on"`
-
-	User   Author `json:"user"`
-	Inline struct {
-		Path string `json:"path"`
-	} `json:"inline"`
-	UpdatedOn time.Time `json:"updated_on"`
-	Type      string    `json:"type"`
-	ID        int       `json:"id"`
-	Link      string
 }
