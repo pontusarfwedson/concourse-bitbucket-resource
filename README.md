@@ -2,7 +2,7 @@ This repo is inspired by [pickledrick/concourse-bitbucket-pullrequest-resource](
 
 A [Concourse](http://concourse.ci/) [resource](http://concourse.ci/resources.html) to interact with the build status API of [Atlassian BitBucket](https://bitbucket.org).
 
-This repo is tied to the [associated Docker image](quay.io/pontusarfwedson/concourse-bitbucket-resource) on quay.io, built from the master branch.
+This repo is tied to the [associated Docker image](http://quay.io/pontusarfwedson/concourse-bitbucket-resource) on quay.io, built from the master branch.
 ## Resource Configuration
 
 
