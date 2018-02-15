@@ -17,31 +17,14 @@ const (
 
 func main() {
 	var response models.CheckResponse
-	var request models.ResourceRequest
+	var request models.InRequest
 
-	// REMOVED HARDCODED
-
-	request.Source.Branch = "develop"
-	request.Source.Key = "vh3EaV9qVuEX4Sbk6H"
-	request.Source.Secret = "skbEyZ7RLF9YAyZfekjgVxHuJQkAuBce"
-	request.Source.URL = "https://api.bitbucket.org"
-	request.Source.APIVersion = "2.0"
-	request.Source.Team = "lightelligence"
-	request.Source.Repo = "notify"
-	request.Version.Commit = "15347950458f6b2f1f31202f75cb4b2dda26edce"
-	err := logging.PrintText("Unmarshalled struct into", whoami)
-
-	//
-
-	// UNCOMMENT THIS
-
-	//err := json.NewDecoder(os.Stdin).Decode(&request)
-	//check(err)
-	//err = logging.PrintText("Unmarshalled struct into", whoami)
-
-	//
-
+	err := json.NewDecoder(os.Stdin).Decode(&request)
 	check(err)
+
+	err = logging.PrintText("Unmarshalled struct into", whoami)
+	check(err)
+
 	err = logging.PrintStruct(request, whoami)
 	check(err)
 
