@@ -13,6 +13,11 @@ import (
 	"github.com/pontusarfwedson/concourse-bitbucket-resource/cmd/models"
 )
 
+const (
+	Url        = "https://api.bitbucket.org"
+	ApiVersion = "2.0"
+)
+
 // GetCommitsBranch gets all the commits for a specific repo and branch
 func GetCommitsBranch(url string, token string, version string, team string, repo string, branch string) (*models.CommitsResponse, error) {
 	req, err := http.NewRequest("GET", url+"/"+version+"/repositories/"+team+"/"+repo+"/commits/"+branch, nil)

@@ -35,7 +35,7 @@ func main() {
 	token, err := bitbucket.RequestToken(request.Source.Key, request.Source.Secret)
 	check(err)
 
-	err = bitbucket.SetBuildStatus(request.Source.URL, token, request.Source.APIVersion, request.Source.Team, request.Source.Repo, request.Version.Commit, "INPROGRESS", request.Source.ConcourseURL)
+	err = bitbucket.SetBuildStatus(bitbucket.Url, token, bitbucket.ApiVersion, request.Source.Team, request.Source.Repo, request.Version.Commit, "INPROGRESS", request.Source.ConcourseURL)
 	check(err)
 
 	args := os.Args

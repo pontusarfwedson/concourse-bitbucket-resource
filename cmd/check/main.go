@@ -30,7 +30,7 @@ func main() {
 
 	token, err := bitbucket.RequestToken(request.Source.Key, request.Source.Secret)
 	check(err)
-	commits, err := bitbucket.GetCommitsBranch(request.Source.URL, token, request.Source.APIVersion, request.Source.Team, request.Source.Repo, request.Source.Branch)
+	commits, err := bitbucket.GetCommitsBranch(bitbucket.Url, token, bitbucket.ApiVersion, request.Source.Team, request.Source.Repo, request.Source.Branch)
 	check(err)
 
 	if request.Version.Commit == "" && len(commits.Values) > 0 {

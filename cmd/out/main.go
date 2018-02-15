@@ -34,15 +34,15 @@ func main() {
 	UpdateCommit = strings.TrimSpace(UpdateCommit)
 	switch state := request.Params.State; state {
 	case "success":
-		err = bitbucket.SetBuildStatus(request.Source.URL, token, request.Source.APIVersion, request.Source.Team, request.Source.Repo, UpdateCommit, "SUCCESSFUL", request.Source.ConcourseURL)
+		err = bitbucket.SetBuildStatus(bitbucket.Url, token, bitbucket.ApiVersion, request.Source.Team, request.Source.Repo, UpdateCommit, "SUCCESSFUL", request.Source.ConcourseURL)
 		check(err)
 		log.Print(UpdateCommit)
 	case "failed":
-		err = bitbucket.SetBuildStatus(request.Source.URL, token, request.Source.APIVersion, request.Source.Team, request.Source.Repo, UpdateCommit, "FAILED", request.Source.ConcourseURL)
+		err = bitbucket.SetBuildStatus(bitbucket.Url, token, bitbucket.ApiVersion, request.Source.Team, request.Source.Repo, UpdateCommit, "FAILED", request.Source.ConcourseURL)
 		check(err)
 		log.Print(UpdateCommit)
 	case "inprogress":
-		err = bitbucket.SetBuildStatus(request.Source.URL, token, request.Source.APIVersion, request.Source.Team, request.Source.Repo, UpdateCommit, "INPROGRESS", request.Source.ConcourseURL)
+		err = bitbucket.SetBuildStatus(bitbucket.Url, token, bitbucket.ApiVersion, request.Source.Team, request.Source.Repo, UpdateCommit, "INPROGRESS", request.Source.ConcourseURL)
 		check(err)
 		log.Print(UpdateCommit)
 	default:

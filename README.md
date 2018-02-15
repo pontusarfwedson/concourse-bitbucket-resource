@@ -12,8 +12,6 @@ These items go in the `source` fields of the resource type. Bold items are requi
  * **`branch`** - the branch to check and get
  * **`secret`** - OAuth Secret for Consumer
  * **`team`** - Team name repository belongs to
- * **`url`** - bitbucket cloud api path (example: `https://api.bitbucket.org`) **Currently only supported**
- * **`version`** - bitbucket API Version (example: `2.0`) **Currently only supported**
  * **`concourse_url`** - concourse url for setting build link in bitbucket (example: `http://ci.example.com`)
 
 
@@ -61,8 +59,6 @@ resources:
       secret: ((bitbucket_secret))
       key: ((bitbucket_key))
       team: teamname
-      url: https://api.bitbucket.org
-      version: "2.0"
       concourse_url: https://concourse-url.com
 
 

@@ -146,8 +146,6 @@ type Source struct {
 	Secret       string `json:"secret"`
 	Key          string `json:"key"`
 	Team         string `json:"team"`
-	URL          string `json:"url"`
-	APIVersion   string `json:"version"`
 	ConcourseURL string `json:"concourse_url"`
 }
 
