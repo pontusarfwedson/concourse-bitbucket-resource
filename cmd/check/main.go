@@ -33,7 +33,7 @@ func main() {
 	commits, err := bitbucket.GetCommitsBranch(request.Source.URL, token, request.Source.APIVersion, request.Source.Team, request.Source.Repo, request.Source.Branch)
 	check(err)
 
-	if request.Version.Commit == "" {
+	if request.Version.Commit == "" && len(commits.Values) > 0 {
 		response = append(response, models.Version{Commit: commits.Values[0].Hash})
 	} else {
 		for _, commit := range commits.Values {
