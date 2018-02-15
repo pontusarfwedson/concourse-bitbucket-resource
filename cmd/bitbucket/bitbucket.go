@@ -10,8 +10,29 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/pontusarfwedson/concourse-bitbucket-pullrequest-resource/cmd/models"
+	"github.com/pontusarfwedson/concourse-bitbucket-resource/cmd/models"
 )
+
+func GetCommitsBranch(url string, token string, version string, team string, repo string, branch string) (*models.CommitsResponse, error) {
+	req, err := http.NewRequest("GET", url+"/"+version+"/repositories/"+team+"/"+repo+"/commits/"+branch, nil)
+	if err != nil {
+		return nil, errors.Wrap(err, "Could not create http request")
+	}
+	req.Header.Add("Authorization", "Bearer "+token)
+
+	var client = &http.Client{}
+	response, err := client.Do(req)
+	if err != nil {
+		return nil, errors.Wrap(err, "Could not run http get")
+	}
+	defer response.Body.Close()
+
+	var cmtRsp models.CommitsResponse
+	decoder := json.NewDecoder(response.Body)
+	err = decoder.Decode(&cmtRsp)
+
+	return &cmtRsp, err
+}
 
 // SetBuildStatus updates the commit associated with a pull-request and sets the state () as well as a link to the Concourse build log.
 func SetBuildStatus(url, token, version, team, repo, commit, state, concourseHost string) error {
@@ -132,7 +153,7 @@ func GetCommitStatus(url string, token string) (string, error) {
 	}
 	req.Header.Add("Authorization", "Bearer "+token)
 
-	var response models.CommitResponse
+	var response models.CommitStatusResponse
 	err = do(req, &response)
 	if err != nil {
 		return "", errors.Wrap(err, "request to retrieve commit status failed")

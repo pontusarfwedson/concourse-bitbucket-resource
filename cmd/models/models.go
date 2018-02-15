@@ -2,6 +2,90 @@ package models
 
 import "time"
 
+type CommitsResponse struct {
+	Pagelen int `json:"pagelen"`
+	Values  []struct {
+		Hash       string `json:"hash"`
+		Repository struct {
+			Links struct {
+				Self struct {
+					Href string `json:"href"`
+				} `json:"self"`
+				HTML struct {
+					Href string `json:"href"`
+				} `json:"html"`
+				Avatar struct {
+					Href string `json:"href"`
+				} `json:"avatar"`
+			} `json:"links"`
+			Type     string `json:"type"`
+			Name     string `json:"name"`
+			FullName string `json:"full_name"`
+			UUID     string `json:"uuid"`
+		} `json:"repository"`
+		Links struct {
+			Self struct {
+				Href string `json:"href"`
+			} `json:"self"`
+			Comments struct {
+				Href string `json:"href"`
+			} `json:"comments"`
+			Patch struct {
+				Href string `json:"href"`
+			} `json:"patch"`
+			HTML struct {
+				Href string `json:"href"`
+			} `json:"html"`
+			Diff struct {
+				Href string `json:"href"`
+			} `json:"diff"`
+			Approve struct {
+				Href string `json:"href"`
+			} `json:"approve"`
+			Statuses struct {
+				Href string `json:"href"`
+			} `json:"statuses"`
+		} `json:"links"`
+		Author struct {
+			Raw  string `json:"raw"`
+			Type string `json:"type"`
+			User struct {
+				Username    string `json:"username"`
+				DisplayName string `json:"display_name"`
+				Type        string `json:"type"`
+				UUID        string `json:"uuid"`
+				Links       struct {
+					Self struct {
+						Href string `json:"href"`
+					} `json:"self"`
+					HTML struct {
+						Href string `json:"href"`
+					} `json:"html"`
+					Avatar struct {
+						Href string `json:"href"`
+					} `json:"avatar"`
+				} `json:"links"`
+			} `json:"user"`
+		} `json:"author"`
+		Parents []struct {
+			Hash  string `json:"hash"`
+			Type  string `json:"type"`
+			Links struct {
+				Self struct {
+					Href string `json:"href"`
+				} `json:"self"`
+				HTML struct {
+					Href string `json:"href"`
+				} `json:"html"`
+			} `json:"links"`
+		} `json:"parents"`
+		Date    time.Time `json:"date"`
+		Message string    `json:"message"`
+		Type    string    `json:"type"`
+	} `json:"values"`
+	Next string `json:"next"`
+}
+
 // Author represents a real person, referenced as either an "Author" or a "User"
 type Author struct {
 	DisplayName string `json:"display_name"`
@@ -154,7 +238,7 @@ type GenericResponse struct {
 }
 
 // CheckRequest is the struct/JSON that is supplied to "check", coming from the Concourse pipeline under "resources"
-type CheckRequest struct {
+type ResourceRequest struct {
 	Source  Source  `json:"source"`
 	Version Version `json:"version"`
 }
@@ -171,6 +255,7 @@ type Params struct {
 
 // Source ... (referenced from CheckRequest)
 type Source struct {
+	Branch       string `json:"branch"`
 	Repo         string `json:"repo"`
 	Secret       string `json:"secret"`
 	Key          string `json:"key"`
@@ -182,9 +267,7 @@ type Source struct {
 
 // Version ... (referenced from CheckRequest)
 type Version struct {
-	Commit      string `json:"commit"`
-	PullRequest string `json:"pullrequest"`
-	Link        string `json:"link,omitempty"`
+	Commit string `json:"commit"`
 }
 
 // InRequest is the struct/JSON supplied as input to "in" - Concourse pipeline "get"
@@ -243,7 +326,7 @@ type Token struct {
 
 // CommitResponse represents the Commit Status response from the Bitbucket API.
 // <https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/commit/%7Bnode%7D/statuses>
-type CommitResponse struct {
+type CommitStatusResponse struct {
 	Page    int `json:"page"`
 	Pagelen int `json:"pagelen"`
 	Size    int `json:"size"`

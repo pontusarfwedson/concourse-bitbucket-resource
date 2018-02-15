@@ -7,7 +7,7 @@ import (
 	"net/url"
 
 	"github.com/pkg/errors"
-	"github.com/pontusarfwedson/concourse-bitbucket-pullrequest-resource/cmd/models"
+	"github.com/pontusarfwedson/concourse-bitbucket-resource/cmd/models"
 	"github.com/sethgrid/pester"
 )
 

@@ -5,12 +5,10 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strconv"
-	"strings"
 
-	"github.com/pontusarfwedson/concourse-bitbucket-pullrequest-resource/cmd/bitbucket"
-	"github.com/pontusarfwedson/concourse-bitbucket-pullrequest-resource/cmd/logging"
-	"github.com/pontusarfwedson/concourse-bitbucket-pullrequest-resource/cmd/models"
+	"github.com/pontusarfwedson/concourse-bitbucket-resource/cmd/bitbucket"
+	"github.com/pontusarfwedson/concourse-bitbucket-resource/cmd/logging"
+	"github.com/pontusarfwedson/concourse-bitbucket-resource/cmd/models"
 )
 
 const (
@@ -19,73 +17,48 @@ const (
 
 func main() {
 	var response models.CheckResponse
-	var request models.CheckRequest
+	var request models.ResourceRequest
 
-	err := json.NewDecoder(os.Stdin).Decode(&request)
-	check(err)
+	// REMOVED HARDCODED
 
-	err = logging.PrintText("Unmarshalled struct into", whoami)
+	request.Source.Branch = "develop"
+	request.Source.Key = "vh3EaV9qVuEX4Sbk6H"
+	request.Source.Secret = "skbEyZ7RLF9YAyZfekjgVxHuJQkAuBce"
+	request.Source.URL = "https://api.bitbucket.org"
+	request.Source.APIVersion = "2.0"
+	request.Source.Team = "lightelligence"
+	request.Source.Repo = "notify"
+	request.Version.Commit = "15347950458f6b2f1f31202f75cb4b2dda26edce"
+	err := logging.PrintText("Unmarshalled struct into", whoami)
+
+	//
+
+	// UNCOMMENT THIS
+
+	//err := json.NewDecoder(os.Stdin).Decode(&request)
+	//check(err)
+	//err = logging.PrintText("Unmarshalled struct into", whoami)
+
+	//
+
 	check(err)
 	err = logging.PrintStruct(request, whoami)
 	check(err)
 
 	token, err := bitbucket.RequestToken(request.Source.Key, request.Source.Secret)
 	check(err)
-
-	out, err := bitbucket.GetPullRequests(request.Source.URL, token, request.Source.APIVersion, request.Source.Team, request.Source.Repo)
+	commits, err := bitbucket.GetCommitsBranch(request.Source.URL, token, request.Source.APIVersion, request.Source.Team, request.Source.Repo, request.Source.Branch)
 	check(err)
 
-	counter := 0
-	for counter < 1 {
-		for _, pr := range *out {
-
-			state, err := bitbucket.GetCommitStatus(pr.Source.Commit.Links.Self.Href, token)
-			check(err)
-
-			link := pr.Links.HTML.Href
-
-			if pr.CommentCount > 0 {
-				comments, err := bitbucket.GetPrComments(pr.Links.Comments.Href, token)
-				check(err)
-
-				for _, comment := range comments {
-
-					possibleCommand := strings.Split(comment.Content.Raw, "\n")[0]
-
-					// If the first line of the comment is "/retest", then include this link
-					// in the output, instead of the default PR link. This should trigger
-					// a new build.
-					if possibleCommand == "/retest" {
-						link = comment.Link
-					}
-				}
+	if request.Version.Commit == "" {
+		response = append(response, models.Version{Commit: commits.Values[0].Hash})
+	} else {
+		for _, commit := range commits.Values {
+			if request.Version.Commit == commit.Hash {
+				break
 			}
-
-			responseOut := models.Version{
-				Commit:      pr.Source.Commit.Hash,
-				PullRequest: strconv.Itoa(pr.ID),
-				Link:        link,
-			}
-
-			switch state {
-			case "SUCCESSFUL":
-				response = append(response, responseOut)
-			case "INPROGRESS":
-				response = append(response, responseOut)
-			case "FAILING", "FAILED":
-				response = append(response, responseOut)
-				counter++
-			case "STOPPED":
-				response = append(response, responseOut)
-				counter++
-			case "none":
-				response = append(response, responseOut)
-				counter++
-			default:
-				counter++
-			}
+			response = append(response, models.Version{Commit: commit.Hash})
 		}
-		break
 	}
 
 	b, _ := json.Marshal(response)
