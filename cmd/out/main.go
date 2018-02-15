@@ -7,9 +7,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/pontusarfwedson/concourse-bitbucket-pullrequest-resource/cmd/bitbucket"
-	"github.com/pontusarfwedson/concourse-bitbucket-pullrequest-resource/cmd/logging"
-	"github.com/pontusarfwedson/concourse-bitbucket-pullrequest-resource/cmd/models"
+	"github.com/pontusarfwedson/concourse-bitbucket-resource/cmd/bitbucket"
+	"github.com/pontusarfwedson/concourse-bitbucket-resource/cmd/logging"
+	"github.com/pontusarfwedson/concourse-bitbucket-resource/cmd/models"
 )
 
 const (
@@ -19,10 +19,8 @@ const (
 func main() {
 
 	var request models.OutRequest
-
 	err := json.NewDecoder(os.Stdin).Decode(&request)
 	check(err)
-
 	args := os.Args
 	inputDir := args[1]
 

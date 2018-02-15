@@ -238,7 +238,7 @@ type GenericResponse struct {
 }
 
 // CheckRequest is the struct/JSON that is supplied to "check", coming from the Concourse pipeline under "resources"
-type ResourceRequest struct {
+type CheckRequest struct {
 	Source  Source  `json:"source"`
 	Version Version `json:"version"`
 }
