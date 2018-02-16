@@ -134,9 +134,8 @@ type CheckResponse []Version
 
 // Params ... (referenced from OutRequest)
 type Params struct {
-	State       string `json:"state"`
-	PullRequest string `json:"pull_request"`
-	Commit      string `json:"commit"`
+	State  string `json:"state"`
+	Commit string `json:"commit"`
 }
 
 // Source ... (referenced from CheckRequest)
@@ -194,10 +193,6 @@ type OutStatus struct {
 	Key   string `json:"key"`
 	URL   string `json:"url"`
 }
-
-// type CredentialsRequest2 struct {
-// 	GrantType string `json:"grant_type"`
-// }
 
 // Token holds Authentication Tokens for accessing the Bitbucket API.
 type Token struct {
