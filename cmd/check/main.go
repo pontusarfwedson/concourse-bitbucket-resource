@@ -38,6 +38,7 @@ func main() {
 	} else {
 		for _, commit := range commits.Values {
 			if request.Version.Commit == commit.Hash {
+				response = append(response, models.Version{Commit: commit.Hash})
 				break
 			}
 			response = append(response, models.Version{Commit: commit.Hash})
