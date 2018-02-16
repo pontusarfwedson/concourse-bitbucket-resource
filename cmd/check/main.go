@@ -45,7 +45,15 @@ func main() {
 		}
 	}
 
-	b, _ := json.Marshal(response)
+	//Revert our response so that we get the newer versions below the older ones
+	responseReverted := make(models.CheckResponse, len(response), len(response))
+	index := 0
+	for i := len(response) - 1; i >= 0; i-- {
+		responseReverted[i] = response[index]
+		index++
+	}
+
+	b, _ := json.Marshal(responseReverted)
 	jsonStr := string(b)
 	err = logging.PrintText(fmt.Sprintf(">>>>>>>>>>     Output to os.Stdout is %s", jsonStr), whoami)
 	check(err)
