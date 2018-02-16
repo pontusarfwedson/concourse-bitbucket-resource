@@ -26,11 +26,14 @@ func main() {
 	err := json.NewDecoder(os.Stdin).Decode(&request)
 	check(err)
 
+	fmt.Errorf("The commit is %s", request.Version.Commit)
 	if request.Version.Commit == "" {
 		log.Printf("Ignoring input request without version (commit)")
 		err = json.NewEncoder(os.Stdout).Encode(models.InResponse{Version: models.Version{}, Metadata: models.Metadata{}})
 		check(err)
 		return
+	} else {
+		fmt.Errorf("Did not ignore input")
 	}
 	token, err := bitbucket.RequestToken(request.Source.Key, request.Source.Secret)
 	check(err)
